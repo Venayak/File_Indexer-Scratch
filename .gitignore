@@ -10,3 +10,6 @@ build/
 
 #OS Junk
 .DS_Store
+
+#temp code runner file
+tempCodeRunnerFile.cpp

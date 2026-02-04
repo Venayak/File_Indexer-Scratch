@@ -1,0 +1,12 @@
+#executables
+*.exe
+*.out
+
+#build directories
+build/
+
+#VS Code
+.vscode/
+
+#OS Junk
+.DS_Store

@@ -38,7 +38,12 @@ class FileIndexer{
     }
 
     void print_index(){
-
+        for(const auto &[file, paths] : index){
+            std::cout<<"\n\n\n[DIR]-> "<<file.generic_string()<<"\n  |\n";
+            for(const auto &p : paths){
+                std::cout<<"  |----"<<p.generic_string()<<"\n";
+            }
+        }
     }
 };
 
@@ -52,4 +57,6 @@ int main(){
     std::getline(std::cin,root);
 
     indexer.set_root(root);
+    indexer.build_index();
+    indexer.print_index();
 }

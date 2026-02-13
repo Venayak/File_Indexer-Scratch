@@ -1,34 +1,55 @@
 #include<iostream>
 #include<filesystem>
 #include<unordered_map>
+#include<string>
 #include<vector>
 
 namespace fs=std::filesystem;
 
+class FileIndexer{
+    private:
+    fs::path root_path;
+    std::unordered_map<fs::path,std::vector<fs::path>> index;
+
+    public:
+    void set_root(const std::string& root){
+        if(root.empty()){
+            std::cout<<"So your root directory is: "<<fs::path(".");
+           root_path=fs::path(".");
+        }
+        else{
+            std::cout<<"\n\nSo your root directory is: "<<root;
+            root_path=root;
+        }
+    }
+
+    void build_index(){
+        index.clear();
+        fs::path filename,filepath;
+
+        for(const fs::directory_entry &entry : fs::recursive_directory_iterator(root_path, fs::directory_options::skip_permission_denied)){
+            if(!entry.is_regular_file()){
+                continue;
+            }
+            filename=entry.path().filename();
+            filepath=entry.path();
+            index[filename].push_back(filepath);
+        }
+    }
+
+    void print_index(){
+
+    }
+};
+
 int main(){
-std::cout<<"\033[2J\033[1;1H";
-//std::cout<<"Which directory?\n"; //USE \033[x;15H for 2 columns!!!
+    std::cout<<"\033[2J\033[1;1H";
 
-std::unordered_map<std::string,std::vector<std::string>> index;
+    FileIndexer indexer;
 
-for(const fs::directory_entry &entry: fs::recursive_directory_iterator(".")){
-    if(!entry.is_regular_file()){ //ignores folders, special files
-        continue;
-    }
-    
-    std::string filename=entry.path().filename().generic_string(); //string x="hello world";
-    std::string filepath=entry.path().generic_string();
+    std::cout<<"Enter the root directory to index from: (example- C:/users/)\n\n";
+    std::string root;
+    std::getline(std::cin,root);
 
-    index[filename].push_back(filepath); //inside index variable of type hashmap, corresponding value of key filename = it's corresponding filepath (index[key]=value; or index[key].push_back(value);)
-
-    if(entry.is_directory()){
-        std::cout<<"[DIR]";
-    }
-    else{                         
-        std::cout<<"[FILE]";
-    }
-    std::cout<<entry.path().generic_string()<<"\n";
-}
-
-return 0;    
+    indexer.set_root(root);
 }

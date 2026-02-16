@@ -6,6 +6,7 @@
 #include<cctype>
 
 namespace fs=std::filesystem;
+std::string name;
 
 class FileIndexer{
     private:
@@ -15,7 +16,7 @@ class FileIndexer{
     public:
     void set_root(const std::string& root){
         if(root.empty()){
-            std::cout<<"So your root directory is: "<<fs::path(".");
+            std::cout<<"So your current directory is: "<<fs::path(".");
            root_path=fs::path(".");
         }
         else{
@@ -53,7 +54,7 @@ class Chat{
     bool s,o;
     Chat(bool search, bool open) : s(search), o(open){
         std::cout<<"Hey! I'm Ven,\nWhat is your name?\n\n\n";
-        std::string name,ans1;
+        std::string ans1;
         std::cin>>name;
         std::cout<<"\n\nHey "<<name<<"! How can I assist you today?\n\n\n";
         //while(1)
@@ -101,13 +102,15 @@ int main(){
 
     if(bot.o){
         std::cout<<"\n\nreceived open\n\n\n";
+        std::cout<<"\n\nGot it "<<name<<"! which file do you want to open?\n\n\n";
+        //will continue later
     }
     else if(bot.s){
         std::cout<<"\n\nreceived search\n\n\n";
         
         FileIndexer indexer;
 
-        std::cout<<"Enter the root directory to index from: (example- C:/users/)\n\n";
+        std::cout<<"Enter the root directory to index from: (example- C:/users/)\t\t\t\t(or press Enter to index current directory)\n\n";
         std::string root;
         std::getline(std::cin,root);
 
@@ -120,3 +123,4 @@ int main(){
     std::cout<<"\n\n\n******************************************************************************PRESS ENTER TO EXIT*****************************************************************************\n";
     std::cin.get();
 }
+//EXCEPTION HANDLING FOR C:/ check older promt of ChatGPT

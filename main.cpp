@@ -61,13 +61,42 @@ class FileIndexer{
 
     public:
     void set_root(const std::string& root){
-        if(root.empty()){
-            std::cout<<"So your current directory is: "<<fs::path(".");
-           root_path=fs::path(".");
-        }
-        else{
-            std::cout<<"\n\nSo your root directory is: "<<root;
-            root_path=root;
+        std::string temp_root=root;
+        while(true){
+            if(temp_root.empty()){
+                std::cout<<"So your current directory is: "<<fs::current_path();
+            }
+            else{
+                std::cout<<"\n\nSo your root directory is: "<<temp_root;
+            }
+
+            std::cout<<"\nisn't it?\n\n\n";
+            std::string confirm;
+            std::getline(std::cin, confirm);
+            for(auto &c : confirm)
+                c=tolower(c);
+
+            if(confirm=="yes"||confirm=="yup"){
+                if(temp_root.empty()){
+                    root_path=fs::current_path();
+                }
+                else{
+                    root_path=fs::absolute(fs::path(temp_root));
+                    if(!fs::exists(root_path) || !fs::is_directory(root_path)){
+                        std::cout << "\n\nInvalid directory. Try again.\n\n";
+                        std::getline(std::cin, temp_root);
+                        continue;
+                    }
+                }
+                break;
+            }
+            else if(confirm=="no"||confirm=="nope"){
+                std::cout<<"\n\nEnter the root directory again:\n\n";
+                std::getline(std::cin, temp_root);
+            }
+            else{
+                std::cout<<"\n\nPlease type yes or no :/\n";
+            }
         }
     }
 
@@ -216,6 +245,7 @@ int main(){
             
             FileIndexer indexer;
 
+            std::cout<<"\n\nAlright "<<name<<"!\n";
             std::cout<<"\n\nEnter the root directory to index from: (example- C:/users/)\t\t\t\t(or press Enter to index current directory)\n\n";
             std::string root;
             std::getline(std::cin,root);
@@ -224,7 +254,7 @@ int main(){
             indexer.build_index();
             indexer.print_index();
 
-            const auto& results = indexer.get_results();
+            const auto& results=indexer.get_results();
 
             if(results.empty()){
                 std::cout<<"\n\nNo files found.\n";

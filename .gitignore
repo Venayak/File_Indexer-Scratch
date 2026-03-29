@@ -1,5 +1,6 @@
 # EXECUTABLES / BINARIES
 *.exe
+!Preprocessor_Util_Script.exe
 *.out
 *.app
 *.dll

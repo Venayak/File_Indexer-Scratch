@@ -137,13 +137,10 @@ class FileIndexer{
 }
 
     void print_index(){
-        int i = 1;
-        for(const auto &[file, paths] : index){
-            std::cout<<"\n\n\n[DIR]-> "<<file.generic_string()<<"\n  |\n";
-            for(const auto &p : paths){
-                std::cout<<"  |----["<<i<<"] "<<p.generic_string()<<"\n";
-                i++;
-            }
+        int i=1;
+        for(const auto &p : flat_results){
+            std::cout<<"\n["<<i<<"] "<<p.filename().generic_string()<<" -> "<<p.generic_string()<<"\n";
+            i++;
         }
     }
 
@@ -162,31 +159,31 @@ class FileReader{
     int check(){
         fs::path p(fileName);
 
-        std::string ext = p.extension().string();
+        std::string ext=p.extension().string();
         for(auto &c : ext){
             c=tolower(c);
         }
 
-        if(ext == ".docx" || ext == ".pdf"){
-            std::cout << "\n\nConverting to .txt...\n\n";
+        if(ext==".docx" || ext==".pdf"){
+            std::cout<<"\n\nConverting to .txt...\n\n";
 
-            std::string command = ".\\Preprocessor_Util_Script.exe \"" + fileName + "\""; // \" is yet another escape sequence(since starting with \)
+            std::string command=".\\Preprocessor_Util_Script.exe \"" + fileName + "\""; // \" is yet another escape sequence(since starting with \)
 
-            int result = system(command.c_str());
+            int result=system(command.c_str());
 
-            if(result != 0){
-                std::cout << "\n\nFailed to convert file\n\n\n";
+            if(result!=0){
+                std::cout<<"\n\nFailed to convert file\n\n\n";
                     return 1;
             }
 
-            std::cout << "\n\nConversion complete\n\n\n";
+            std::cout<<"\n\nConversion complete\n\n\n";
 
             p.replace_extension(".txt");
 
             std::ifstream file(p.string());
 
             if(!file.is_open()){
-                std::cout << "\n\nFailed to open converted .txt file\n\n\n";
+                std::cout<<"\n\nFailed to open converted .txt file\n\n\n";
                 return 1;
             }
 
@@ -197,7 +194,7 @@ class FileReader{
             std::ifstream file(fileName);
 
             if(!file.is_open()){
-                std::cout << "\n\nFailed to open file\n\n\n";
+                std::cout<<"\n\nFailed to open file\n\n\n";
                 return 1;
             }
 

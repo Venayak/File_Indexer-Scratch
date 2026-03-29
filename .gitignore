@@ -1,15 +1,43 @@
-#executables
+# EXECUTABLES / BINARIES
 *.exe
 *.out
+*.app
+*.dll
+*.so
 
-#build directories
+# BUILD DIRECTORIES
 build/
+bin/
+obj/
+out/
 
-#VS Code
+# C++ COMPILER FILES
+*.o
+*.obj
+*.gch
+*.pch
+
+# PYTHON
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# PyInstaller
+dist/
+*.spec
+
+# VS CODE
 .vscode/
 
-#OS Junk
+# OS JUNK
 .DS_Store
+Thumbs.db
 
-#temp code runner file
+# TEMP / TEST FILES
 tempCodeRunnerFile.cpp
+*.log
+*.tmp
+
+# GENERATED TEXT FILES
+# *.txt
